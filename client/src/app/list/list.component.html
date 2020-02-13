@@ -1,1 +1,26 @@
-<p>list works!</p>
+<div class="row">
+	<table class="striped">
+		<thead>
+			<th>#</th>
+			<th>Title</th>
+			<th>Date expire</th>
+			<th>Description</th>
+			<th>Status</th>
+			<th></th>
+		</thead>
+		<tbody>
+			<tr *ngFor="let task of tasks; index as idx">
+				<td>{{ idx + 1 }}</td>
+				<td>{{ task.title }}</td>
+				<td>{{ task.date|date:'dd.MM.yyyy' }}</td>
+				<td class='list-description'>{{ task.description }}</td>
+				<td>{{ task.status }}</td>
+				<td>
+					<button class="btn"
+							[routerLink]="['/tasks', task.id, 'edit']"
+							>Edit</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

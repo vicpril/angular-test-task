@@ -8,7 +8,13 @@ export class TasksService {
 	}
 	
 	fetchTasks() {
-		this.tasks = localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : [];
+		const tasks = localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : [];
+		this.tasks = tasks.map(t => {
+			if(t.status != 'Completed' && +new Date(t.date) <= +new Date()) {
+			   t.status = 'Outdated'
+			}
+			return t;
+		} )
 	}
 	
 	saveTasks() {
@@ -23,6 +29,7 @@ export class TasksService {
 		if(!task.id) {
 			task.id = +new Date();
 		}
+        task.status = (+task.date > +new Date()) ? 'In progress' : 'Outdated';
 		this.tasks.push(task);
 		this.saveTasks();
 	}
@@ -30,12 +37,14 @@ export class TasksService {
 	updateTask(id: number, data) {
 		const idx = this.getTasks().findIndex(t => t.id === id);
 		const tasks = this.getTasks();
-		this.tasks[idx] = {...tasks[idx], title: data.title, description: data.description, date: data.date };
+		const status = (+data.date > +new Date()) ? 'In progress' : 'Outdated';
+		this.tasks[idx] = {...tasks[idx], title: data.title, description: data.description, date: data.date, status: status };
 		this.saveTasks();
 	}
 	
-	deleteTask(id: number) {
-		this.tasks = this.getTasks().filter(t => t.id !== id);
+	completeTask(id: number) {
+		const idx = this.getTasks().findIndex(t => t.id === id);
+		this.tasks[idx].status = 'Completed';
 		this.saveTasks();
 	}
 	

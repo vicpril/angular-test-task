@@ -11,16 +11,17 @@
 			  <label for="title">Task title</label>
 			</div>
 			<div class="input-field chips" #chips>
-				<input class="" [(ngModel)]="task.chips" name="chips[]">
+				<input class="input-chips" name="chips[]">
 			</div>
 			
 			<div class="input-field">
-				 <input type="text" class="datepicker" #datepicker [(ngModel)]="task.date" name="date">
+				 <input type="text" class="datepicker" #datepicker name="date">
 			</div>
 			
 			<div class="input-field">
 			  <input id="description" type="text" class="validate" [(ngModel)]="task.description" name="description">
 			  <label for="description">Description</label>
+			  <span class="helper-text">{{ task.description.length }}/2046</span>
 			</div>
 			<button type="button" class="btn" (click)="onPublish()">
 				Publish

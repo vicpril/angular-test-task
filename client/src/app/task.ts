@@ -1,7 +1,8 @@
 export class Task {
 	id: number;
-	title: string;
+	title: string ='';
 	chips: Object[];
-	description: string;
-	date: string;
+	description: string ='';
+	date: Date;
+	status: string;
 }

@@ -18,7 +18,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('chips') chipspicker: ElementRef;
   @ViewChild('datepicker') datepicker: ElementRef;
   task: Task;
-	chipsObject: any;
+  chipsObject: any;
+  dateObject: any;
 
 
   constructor(
@@ -31,15 +32,16 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 	this.task = new Task()
   }
   ngAfterViewInit() {
-	  this.chipsObject = M.Chips.init(this.chipspicker.nativeElement, []);
-	  M.Datepicker.init(this.datepicker.nativeElement, {
+	  this.chipsObject = M.Chips.init(this.chipspicker.nativeElement);
+	  this.dateObject = M.Datepicker.init(this.datepicker.nativeElement, {
 		  format: 'dd.mm.yyyy'
 	  });
 
   }
 	
 	ngOnDestroy() {
-		
+		this.chipsObject.destroy();
+		this.dateObject.destroy();
 	}
 	
 	onPublish() {
@@ -48,7 +50,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 			return;
 		} else {
 			const task = this.task
-			this.tasksService.createTask({...task, chips: this.chipsObject.chipsData} );
+			this.tasksService.createTask({...task, chips: this.chipsObject.chipsData, date: this.dateObject.date} );
 			this.router.navigate(['/tasks'], {relativeTo: this.route});
 		}
 	}
